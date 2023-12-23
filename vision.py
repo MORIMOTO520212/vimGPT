@@ -11,6 +11,8 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 IMG_RES = 1080
 
+with open("./prompts/get_actions.txt") as f:
+    prompt_get_actions = f.read()
 
 # Function to encode the image
 def encode_and_resize(image):
@@ -21,7 +23,7 @@ def encode_and_resize(image):
     encoded_image = base64.b64encode(buffer.getvalue()).decode("utf-8")
     return encoded_image
 
-
+# 次のアクションを考える
 def get_actions(screenshot, objective):
     encoded_screenshot = encode_and_resize(screenshot)
     response = openai.chat.completions.create(
@@ -32,12 +34,12 @@ def get_actions(screenshot, objective):
                 "content": [
                     {
                         "type": "text",
-                        "text": f"You need to choose which action to take to help a user do this task: {objective}. Your options are navigate, type, click, and done. Navigate should take you to the specified URL. Type and click take strings where if you want to click on an object, return the string with the yellow character sequence you want to click on, and to type just a string with the message you want to type. For clicks, please only respond with the 1-2 letter sequence in the yellow box, and if there are multiple valid options choose the one you think a user would select. For typing, please return a click to click on the box along with a type with the message to write. When the page seems satisfactory, return done as a key with no value. You must respond in JSON only with no other fluff or bad things will happen. The JSON keys must ONLY be one of navigate, type, or click. Do not return the JSON inside a code block.",
+                        "text": prompt_get_actions.replace("{objective}", objective),
                     },
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": f"data:image/jpeg;base64,{encoded_screenshot}",
+                            "url": f"data:image/jpeg;base64,{encoded_screenshot}", # 画像の入力
                         },
                     },
                 ],
