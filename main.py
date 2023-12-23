@@ -1,33 +1,21 @@
 import time
-import argparse
-from whisper_mic import WhisperMic
 
 import vision
 from vimbot import Vimbot
 
-def main(voice_mode):
+def main():
     print("Initializing the Vimbot driver...")
-    driver = Vimbot()
+    driver = Vimbot() # playwrightの準備
 
     print("Navigating to Google...")
-    driver.navigate("https://www.google.com")
+    driver.navigate("https://www.google.com") # ページ遷移
 
-    if voice_mode:
-        print("Voice mode enabled. Listening for your command...")
-        mic = WhisperMic()
-        try:
-            objective = mic.listen()
-        except Exception as e:
-            print(f"Error in capturing voice input: {e}")
-            return  # Exit if voice input fails
-        print(f"Objective received: {objective}")
-    else:
-        objective = input("Please enter your objective: ")
+    objective = input("Please enter your objective: ")
 
     while True:
-        time.sleep(1)
+        input("Please enter and continue process.")
         print("Capturing the screen...")
-        screenshot = driver.capture()
+        screenshot = driver.capture() # ページのスクリーンショットを撮る
 
         print("Getting actions for the given objective...")
         action = vision.get_actions(screenshot, objective)
@@ -36,16 +24,7 @@ def main(voice_mode):
             break
 
 def main_entry():
-    parser = argparse.ArgumentParser(
-        description="Run the Vimbot with optional voice input."
-    )
-    parser.add_argument(
-        "--voice",
-        help="Enable voice input mode",
-        action="store_true",
-    )
-    args = parser.parse_args()
-    main(args.voice)
+    main()
 
 if __name__ == "__main__":
     try:

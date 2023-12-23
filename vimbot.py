@@ -8,6 +8,7 @@ vimium_path = "./vimium-master"
 
 
 class Vimbot:
+    # playwrightの起動
     def __init__(self, headless=False):
         self.context = (
             sync_playwright()
@@ -17,7 +18,7 @@ class Vimbot:
                 headless=headless,
                 args=[
                     f"--disable-extensions-except={vimium_path}",
-                    f"--load-extension={vimium_path}",
+                    f"--load-extension={vimium_path}", # 拡張機能を読み込む
                 ],
                 ignore_https_errors=True,
             )
