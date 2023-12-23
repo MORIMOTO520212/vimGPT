@@ -18,7 +18,7 @@ def main():
         screenshot = driver.capture() # ページのスクリーンショットを撮る
 
         print("Getting actions for the given objective...")
-        action = vision.get_actions(screenshot, objective)
+        action = vision.get_actions(screenshot, objective) # 次のアクションを得る
         print(f"JSON Response: {action}")
         if driver.perform_action(action):  # returns True if done
             break
