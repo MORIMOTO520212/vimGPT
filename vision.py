@@ -52,6 +52,7 @@ def get_actions(screenshot, objective):
         json_response = json.loads(response.choices[0].message.content)
     except json.JSONDecodeError:
         print("Error: Invalid JSON response")
+        print(response.choices[0].message.content)
         cleaned_response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
