@@ -73,5 +73,5 @@ def get_actions(screenshot, objective):
 
 if __name__ == "__main__":
     image = Image.open("image.png")
-    actions = get_actions(image, "upvote the pinterest post")
+    actions = get_actions(image, "Pinterestの投稿に対していいねボタンを押してください")
     print(actions)
