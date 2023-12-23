@@ -13,6 +13,8 @@ IMG_RES = 1080
 
 with open("./prompts/get_actions.txt") as f:
     prompt_get_actions = f.read()
+with open("./prompts/fix_invalid_json.txt") as f:
+    prompt_fix_invalid_json = f.read()
 
 # Function to encode the image
 def encode_and_resize(image):
@@ -56,7 +58,7 @@ def get_actions(screenshot, objective):
         cleaned_response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant to fix an invalid JSON response. You need to fix the invalid JSON response to be valid JSON. You must respond in JSON only with no other fluff or bad things will happen. Do not return the JSON inside a code block."},
+                {"role": "system", "content": prompt_fix_invalid_json},
                 {"role": "user", "content": f"The invalid JSON response is: {response.choices[0].message.content}"}
             ]
         )
@@ -72,3 +74,4 @@ def get_actions(screenshot, objective):
 if __name__ == "__main__":
     image = Image.open("image.png")
     actions = get_actions(image, "upvote the pinterest post")
+    print(actions)
